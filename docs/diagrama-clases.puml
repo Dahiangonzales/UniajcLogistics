@@ -1,0 +1,8 @@
+@startuml
+class Pedido
+interface EstadoPedidoState
+interface EstrategiaEnvio
+interface ValidadorPedido
+interface PedidoObserver
+interface ComandoPedido
+@enduml
