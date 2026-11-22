@@ -2,6 +2,7 @@ package co.edu.uniajc.logistics.domain;
 
 import co.edu.uniajc.logistics.domain.envio.EstrategiaEnvio;
 import co.edu.uniajc.logistics.observadores.PedidoObserver;
+import co.edu.uniajc.logistics.domain.states.PendienteState;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public class Pedido {
     private final String id;
-    private EstadoPedidoState estado = new states.PendienteState();
+private EstadoPedidoState estado = new PendienteState();
     private EstrategiaEnvio estrategiaEnvio;
     private BigDecimal total = BigDecimal.ZERO;
     private final List<PedidoObserver> observadores = new ArrayList<>();
