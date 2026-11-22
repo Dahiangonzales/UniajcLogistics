@@ -1,0 +1,25 @@
+# Archivos compilados y salidas de build
+*.class
+*.jar
+*.war
+*.ear
+target/
+build/
+out/
+bin/
+
+# Carpetas y archivos de IDEs
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Logs y archivos temporales
+*.log
+*.tmp
