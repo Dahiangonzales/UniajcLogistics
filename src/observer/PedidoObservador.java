@@ -1,5 +1,6 @@
+
 package observer;
 
-public class PedidoObservador {
-    
+public interface PedidoObservador {
+    void actualizar(EventoPedido evento);
 }
