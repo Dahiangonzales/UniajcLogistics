@@ -1,2 +1,30 @@
 @startuml
+actor Cliente
+participant "Pedido" as Pedido
+participant "ValidadorStock" as Stock
+participant "ValidadorFraude" as Fraude
+participant "ValidadorCobertura" as Cobertura
+participant "EstadoPedidoState" as Estado
+participant "ClienteNotificador" as ClienteNotificador
+participant "BodegaListener" as Bodega
+participant "AuditoriaLogger" as Auditoria
+
+Cliente -> Pedido : crear pedido
+Pedido -> Stock : validar(pedido)
+Stock -> Fraude : validar(pedido)
+Fraude -> Cobertura : validar(pedido)
+Cobertura --> Pedido : pedido validado
+
+Cliente -> Pedido : pagar()
+Pedido -> Estado : pagar(pedido)
+Estado --> Pedido : cambiar estado a Pagado
+Pedido -> ClienteNotificador : actualizar(pedido, anterior, nuevo)
+Pedido -> Bodega : actualizar(pedido, anterior, nuevo)
+Pedido -> Auditoria : actualizar(pedido, anterior, nuevo)
+
+Cliente -> Pedido : preparar()
+Pedido -> Estado : preparar(pedido)
+Estado --> Pedido : cambiar estado a EnPreparacion
+Pedido -> ClienteNotificador : actualizar(pedido, anterior, nuevo)
+Pedido -> Auditoria : actualizar(pedido, anterior, nuevo)
 @enduml

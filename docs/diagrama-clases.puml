@@ -1,8 +1,98 @@
 @startuml
-class Pedido
-interface EstadoPedidoState
-interface EstrategiaEnvio
-interface ValidadorPedido
-interface PedidoObserver
-interface ComandoPedido
+skinparam classAttributeIconSize 0
+
+class Pedido {
+  -id : String
+  -estado : EstadoPedidoState
+  -estrategiaEnvio : EstrategiaEnvio
+  -total : BigDecimal
+  -stockDisponible : boolean
+  -destino : String
+  +pagar()
+  +preparar()
+  +enviar()
+  +entregar()
+  +cancelar()
+  +cambiarEstrategiaEnvio(estrategia : EstrategiaEnvio)
+  +calcularEnvio() : BigDecimal
+}
+
+interface EstadoPedidoState {
+  +pagar(pedido : Pedido)
+  +preparar(pedido : Pedido)
+  +enviar(pedido : Pedido)
+  +entregar(pedido : Pedido)
+  +cancelar(pedido : Pedido)
+}
+
+class PendienteState
+class PagadoState
+class EnPreparacionState
+class EnviadoState
+class EntregadoState
+class CanceladoState
+
+interface EstrategiaEnvio {
+  +calcularTarifa(pedido : Pedido) : BigDecimal
+}
+
+class EnvioEstandar
+class EnvioExpress
+class EnvioInternacional
+class RetiroEnPunto
+
+interface ValidadorPedido {
+  +conectarCon(siguiente : ValidadorPedido) : ValidadorPedido
+  +validar(pedido : Pedido)
+  #esValido(pedido : Pedido) : boolean
+  #motivoRechazo(pedido : Pedido) : String
+}
+
+class ValidadorStock
+class ValidadorFraude
+class ValidadorCobertura
+
+interface PedidoObserver {
+  +actualizar(pedido : Pedido, anterior : EstadoPedidoState, nuevo : EstadoPedidoState)
+}
+
+class ClienteNotificador
+class BodegaListener
+class AuditoriaLogger
+
+interface ComandoPedido {
+  +ejecutar()
+  +undo()
+}
+
+class AplicarDescuentoCommand
+class CambiarDireccionCommand
+
+Pedido --> EstadoPedidoState : estado actual
+Pedido --> EstrategiaEnvio : estrategia de envio
+Pedido --> PedidoObserver : notifica
+
+EstadoPedidoState <|.. PendienteState
+EstadoPedidoState <|.. PagadoState
+EstadoPedidoState <|.. EnPreparacionState
+EstadoPedidoState <|.. EnviadoState
+EstadoPedidoState <|.. EntregadoState
+EstadoPedidoState <|.. CanceladoState
+
+EstrategiaEnvio <|.. EnvioEstandar
+EstrategiaEnvio <|.. EnvioExpress
+EstrategiaEnvio <|.. EnvioInternacional
+EstrategiaEnvio <|.. RetiroEnPunto
+
+ValidadorPedido <|-- ValidadorStock
+ValidadorPedido <|-- ValidadorFraude
+ValidadorPedido <|-- ValidadorCobertura
+ValidadorPedido --> ValidadorPedido : siguiente
+
+PedidoObserver <|.. ClienteNotificador
+PedidoObserver <|.. BodegaListener
+PedidoObserver <|.. AuditoriaLogger
+
+ComandoPedido <|.. AplicarDescuentoCommand
+ComandoPedido <|.. CambiarDireccionCommand
 @enduml
