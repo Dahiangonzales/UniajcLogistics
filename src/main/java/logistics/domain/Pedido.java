@@ -10,9 +10,11 @@ import java.util.List;
 
 public class Pedido {
     private final String id;
-private EstadoPedidoState estado = new PendienteState();
+    private EstadoPedidoState estado = new PendienteState();
     private EstrategiaEnvio estrategiaEnvio;
     private BigDecimal total = BigDecimal.ZERO;
+    private boolean stockDisponible = true;
+    private String destino = "Cali";
     private final List<PedidoObserver> observadores = new ArrayList<>();
 
     public Pedido(String id) {
@@ -33,6 +35,22 @@ private EstadoPedidoState estado = new PendienteState();
 
     public void setTotal(BigDecimal total) {
         this.total = total;
+    }
+
+    public boolean tieneStockDisponible() {
+        return stockDisponible;
+    }
+
+    public void setStockDisponible(boolean stockDisponible) {
+        this.stockDisponible = stockDisponible;
+    }
+
+    public String getDestino() {
+        return destino;
+    }
+
+    public void setDestino(String destino) {
+        this.destino = destino;
     }
 
     public void cambiarEstado(EstadoPedidoState nuevoEstado) {
@@ -79,4 +97,3 @@ private EstadoPedidoState estado = new PendienteState();
         estado.cancelar(this);
     }
 }
-
